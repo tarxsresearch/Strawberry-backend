@@ -11,7 +11,7 @@ class BackendSlot(BaseModel):
     url: str
     key: str
     routes: List[str]
-    compiled_routes: List[re.Pattern] = []
+    compiled_routes: list = []  # FIX: plain list instead of List[re.Pattern] for pydantic v1
 
     class Config:
         arbitrary_types_allowed = True
@@ -42,11 +42,9 @@ class Settings:
             routes_raw = os.getenv(f"BACKEND_{i}_ROUTES")
 
             if name and url and key and routes_raw:
-                # Standardize routes into clean, searchable arrays
                 routes_list = [r.strip() for r in routes_raw.split(",") if r.strip()]
                 compiled = []
                 for r in routes_list:
-                    # Transform wildcard syntax (/api/auth/*) into precise regular expressions
                     regex_str = "^" + re.escape(r).replace(r"\*", ".*") + "$"
                     compiled.append(re.compile(regex_str))
 
@@ -57,7 +55,6 @@ class Settings:
                     routes=routes_list,
                     compiled_routes=compiled
                 )
-                # Keep active slots set to offline until verified via health check
                 new_health[i] = False
 
         self.slots = new_slots
