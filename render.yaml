@@ -1,0 +1,71 @@
+services:
+  - type: web
+    name: ennex-master-backend
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT --workers 4
+    envVars:
+      - key: PORT
+        value: 10000
+
+      # --- SECURITY SECRETS (set these manually in Render dashboard) ---
+      - key: ALLOWED_ORIGIN
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: ADMIN_JWT_SECRET
+        sync: false
+      - key: HMAC_SHARED_SECRET
+        sync: false
+
+      # --- BACKEND SLOT 1 ---
+      - key: BACKEND_1_NAME
+        value: auth
+      - key: BACKEND_1_URL
+        value: https://your-auth-service.onrender.com
+      - key: BACKEND_1_KEY
+        sync: false
+      - key: BACKEND_1_ROUTES
+        value: "/api/auth/*"
+
+      # --- BACKEND SLOT 2 ---
+      - key: BACKEND_2_NAME
+        value: posts
+      - key: BACKEND_2_URL
+        value: https://your-posts-service.onrender.com
+      - key: BACKEND_2_KEY
+        sync: false
+      - key: BACKEND_2_ROUTES
+        value: "/api/posts/*"
+
+      # --- BACKEND SLOT 3 ---
+      - key: BACKEND_3_NAME
+        value: chat
+      - key: BACKEND_3_URL
+        value: https://your-chat-service.onrender.com
+      - key: BACKEND_3_KEY
+        sync: false
+      - key: BACKEND_3_ROUTES
+        value: "/api/chat/*"
+
+      # --- BACKEND SLOT 4 ---
+      - key: BACKEND_4_NAME
+        value: ai
+      - key: BACKEND_4_URL
+        value: https://your-ai-service.onrender.com
+      - key: BACKEND_4_KEY
+        sync: false
+      - key: BACKEND_4_ROUTES
+        value: "/api/ai/*"
+
+      # --- BACKEND SLOT 5 ---
+      - key: BACKEND_5_NAME
+        value: profile
+      - key: BACKEND_5_URL
+        value: https://your-profile-service.onrender.com
+      - key: BACKEND_5_KEY
+        sync: false
+      - key: BACKEND_5_ROUTES
+        value: "/api/profile/*"
+
+      # --- BACKEND SLOT 6 to 20: copy and fill as needed ---
