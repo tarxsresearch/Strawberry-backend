@@ -14,9 +14,6 @@ class SlotStatus(BaseModel):
     routes: List[str]
     online: bool
 
-    class Config:
-        arbitrary_types_allowed = True
-
 class SystemHealthReport(BaseModel):
     status: str
     active_slots: int
