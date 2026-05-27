@@ -1,10 +1,9 @@
-from typing import Any, Optional
+from typing import Any, Optional, List
 from pydantic import BaseModel
 
 class UnifiedResponse(BaseModel):
-    """Enforces identical data contracts across every API transaction."""
     success: bool
-    data: Optional[Any] = None
+    data: Any = None
     error: Optional[str] = ""
     trace_id: str
 
@@ -12,8 +11,11 @@ class SlotStatus(BaseModel):
     slot_id: int
     name: str
     url: str
-    routes: list[str]
+    routes: List[str]
     online: bool
+
+    class Config:
+        arbitrary_types_allowed = True
 
 class SystemHealthReport(BaseModel):
     status: str
